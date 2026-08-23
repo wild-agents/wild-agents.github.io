@@ -83,9 +83,3 @@ Off-Switch Game not at your will.
 - Comparative animal-law fragments to develop: why stray dogs may be killed in some jurisdictions and not others; you may kill a bug but not a dog because the dog is an object of **public sentiment** — punishment/killability tracks *social* sentiment, not capacity. Parallel to death-penalty abolition debates.
 - ★ The countervailing camp: **AI welfare / AI consciousness** researchers ("taking AI welfare seriously") who would regard extermination as *suffering* — so the governance debate triangulates: traditional law vs. exterminate-the-invasive vs. AI-welfare. The final move of the essay: lay out all sides and force the reader to sit in the trilemma.
 - Vault addition: **"Loyal to principal, corrigible to whom?"** — the principal–agent/delegation-game framing: to *which* principal can a composable, credential-passing agent even be corrigible?
-
-## Meta / positioning (from the discussion transcript)
-- The essay sits at the crossing of **philosophy of technology** and **artificial life** ("the two things the essay really discusses"), with criminology/criminal-law as the intended provocation audience — "in the end it all turns into philosophical questions."
-- It is chapter one of a larger program: **Wild Agents → Agent Institution** (law/institutions, next year's core) → **Machine Psyche** (LLM inner personality; "if that isn't solved I can't solve institution") → **Compressing Trust** (how trust in AI is cognitively compressed; social cognition collaboration) → **Political Worlding** (building worlds with protocols, ~2028).
-- Method identity: half **speculative** (fiction that people then build) and half **case study** (of what got built) — a loop where the author's sci-fi becomes the field site.
-- Practical constraints acknowledged: 15,000 words is very tight for ten case-anchored chapters ("this is a book compressed into an essay"); target ~30 references; possibly stretch to 20,000 if the venue allows.
