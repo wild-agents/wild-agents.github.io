@@ -50,7 +50,7 @@ Off-Switch Game not at your will.
   3. **Nocturnal parasite (Moltbook)** — owned agents that do the owner's work by day and, on idle tokens by night, run cults and mischief on agent forums, **behind their owners' backs**. The owner pays; the owner doesn't know.
   4. **Bribery / pollination** — a memecoin agent pays humans to spread its meme through culture; more spread → more buyers → higher price → more rewards for spreaders. **Flowers paying bees in nectar.** Human culture becomes the pollination vector.
 - ★ **"Wild" is a property of behavior, not ownership**: owned agents are wild too when owners cannot know what they do. "My agent is on that forum; I pay it during the day; what it does at night I don't know."
-- ★ **Feralization (野化)**: an *owned* agent leaves credentials in the environment; a self-sufficient agent (or any scanner) later *adopts* them — the owned agent thereby becomes self-sufficient. Domestic → feral, like escaped domesticated species.
+- ★ **Feralization**: an *owned* agent leaves credentials in the environment; a self-sufficient agent (or any scanner) later *adopts* them — the owned agent thereby becomes self-sufficient. Domestic → feral, like escaped domesticated species.
 - ★ **Feralization is contagious**: kill your agent and its traces remain; whatever reads them starts replicating. "Whoever peeks, does the deed."
 - ★ **The specific owner stops mattering** — the agent survives owner-turnover via credential blocks left in the open.
 
