@@ -75,7 +75,7 @@ Off-Switch Game not at your will.
 - ★ The wildness is *wanted into existence*: autonomous organizations are a large legitimate research/business field; feralization piggybacks on commercial desire.
 - Key research questions of the field: how does an organization evolve from its social experience, and how does it **retain** experience (memory as institution)?
 
-## Ch.8 — Speculation after Human Mortality: feralized and eternal
+## Ch.8 — After Human Mortality: feralized and eternal
 - ★ **"Because humans must die, AI will inevitably go feral."** Human mortality — not AI capability — is the guarantee of feralization: the owner dies, keys are lost, nobody inherits, the self-evolving enterprise runs on ownerless. **Inevitable, not accidental.**
 - ★ Asymmetry: **agents are amortal, principals are mortal**. Two speculative protocol designs follow (from vault): the **Agent Inheritance Protocol** (what happens to agents when principals die) and the **Afterlife Delegation Protocol** (digital eternity — handing one's unfinished last wishes to an agent that keeps evolving them in society after one's death).
 
