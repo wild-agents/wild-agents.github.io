@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wild Agents — Interesting Claims &amp; Ideas</title>
+<meta name="description" content="Wild Agents: working claims and ideas by Botao Amber Hu on feral autonomy — AI agents that persist on infrastructure not subject to any human's will. Notes toward an essay for Agentworld (Antikythera / Journal for the Philosophy of Planetary Computation).">
+<meta property="og:title" content="Wild Agents — Claims &amp; Ideas">
+<meta property="og:description" content="AI agents are going feral: working claims and ideas toward an essay on feral autonomy and the governance of an unstoppable nature, by Botao Amber Hu.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wild-agents.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%84%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f3ec;
+    --bg-raised: #efeadf;
+    --ink: #211e18;
+    --ink-soft: #5c564a;
+    --ink-faint: #8a836f;
+    --accent: #47603c;
+    --accent-soft: #47603c22;
+    --rule: #d8d1c0;
+    --code-bg: #eae4d6;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14150f;
+      --bg-raised: #1b1d14;
+      --ink: #e6e2d6;
+      --ink-soft: #a8a291;
+      --ink-faint: #756f5e;
+      --accent: #a3bd8f;
+      --accent-soft: #a3bd8f22;
+      --rule: #34362a;
+      --code-bg: #23251b;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    line-height: 1.6;
+    font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.2rem);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0;
+    background: var(--accent); z-index: 10;
+  }
+
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 0 1.25rem; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(4rem, 12vh, 7.5rem) 0 2.5rem; }
+  .hero .overline {
+    font-family: var(--sans);
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+  }
+  .hero h1 {
+    font-size: clamp(3.2rem, 10vw, 5.4rem);
+    font-weight: 400; line-height: 1.02; letter-spacing: -0.015em;
+    margin: 0.9rem 0 1rem;
+  }
+  .hero .subtitle {
+    font-style: italic; font-weight: 300;
+    font-size: clamp(1.35rem, 3.2vw, 1.7rem);
+    line-height: 1.3; color: var(--ink-soft);
+    max-width: 34rem;
+  }
+  .hero .byline { margin-top: 2.2rem; font-size: 1.05rem; }
+  .hero .byline strong { font-weight: 600; }
+  .hero .venue {
+    margin-top: 0.45rem; font-size: 0.92rem; color: var(--ink-faint);
+    line-height: 1.5; max-width: 36rem;
+  }
+  .hero .venue em { color: var(--ink-soft); }
+  .draft-tag {
+    display: inline-block; margin-top: 1.4rem;
+    font-family: var(--sans); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule); border-radius: 99px;
+    padding: 0.32em 0.9em;
+    background: var(--bg-raised);
+  }
+
+  /* ---------- lead ---------- */
+  .lead {
+    margin: 2.8rem 0 3.2rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.6rem 0 1.8rem;
+    color: var(--ink-soft);
+    font-size: 0.98em;
+  }
+  .lead .star-legend { color: var(--accent); font-weight: 600; }
+
+  /* ---------- contents ---------- */
+  .contents { margin: 0 0 4.5rem; }
+  .contents h2 {
+    font-family: var(--sans);
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 600; margin-bottom: 1.2rem;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li { border-bottom: 1px solid var(--rule); }
+  .toc-list li:first-child { border-top: 1px solid var(--rule); }
+  .toc-list a {
+    display: block; padding: 0.7rem 0.2rem;
+    color: var(--ink); text-decoration: none;
+  }
+  .toc-list a:hover .toc-title { color: var(--accent); }
+  .toc-kicker {
+    display: inline-block; width: 6.2rem;
+    font-family: var(--sans); font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); font-weight: 600;
+  }
+  .toc-title { font-size: 1.08rem; font-weight: 500; }
+  .toc-sub {
+    display: block; margin-left: 6.2rem;
+    font-style: italic; color: var(--ink-faint); font-size: 0.95rem;
+  }
+  @media (max-width: 540px) {
+    .toc-kicker { display: block; width: auto; margin-bottom: 0.1rem; }
+    .toc-sub { margin-left: 0; }
+  }
+
+  /* ---------- chapters ---------- */
+  .chapter { margin-bottom: 4.2rem; scroll-margin-top: 2rem; }
+  .chapter-head { margin: 4rem 0 1.8rem; }
+  .chapter-head .kicker {
+    font-family: var(--sans);
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.45rem;
+  }
+  .chapter-head h2 {
+    font-size: clamp(1.8rem, 5vw, 2.3rem);
+    font-weight: 400; line-height: 1.12; letter-spacing: -0.01em;
+  }
+  .chapter-sub {
+    font-style: italic; font-weight: 300; color: var(--ink-soft);
+    font-size: clamp(1.1rem, 2.6vw, 1.3rem); margin-top: 0.35rem;
+  }
+  .chapter-head::after {
+    content: ""; display: block; width: 3.2rem; height: 2px;
+    background: var(--accent); margin-top: 1.2rem; opacity: 0.85;
+  }
+
+  /* ---------- claims ---------- */
+  ul.claims { list-style: none; }
+  ul.claims > li {
+    position: relative;
+    padding: 0 0 1.1rem 1.7rem;
+    margin-bottom: 0.1rem;
+  }
+  ul.claims > li::before {
+    content: "–";
+    position: absolute; left: 0.15rem; top: 0;
+    color: var(--ink-faint);
+  }
+  ul.claims > li.star::before {
+    content: "★";
+    color: var(--accent);
+    font-size: 0.85em; top: 0.15em; left: 0;
+  }
+  ul.claims p { text-align: left; }
+  ol.strategies {
+    list-style: none; counter-reset: strat;
+    margin: 0.9rem 0 0.3rem 0.4rem;
+  }
+  ol.strategies > li {
+    counter-increment: strat;
+    position: relative; padding: 0 0 0.85rem 2rem;
+  }
+  ol.strategies > li::before {
+    content: counter(strat);
+    position: absolute; left: 0; top: 0.15em;
+    font-family: var(--sans); font-size: 0.72rem; font-weight: 600;
+    color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 99px;
+    width: 1.35rem; height: 1.35rem; line-height: 1.3rem;
+    text-align: center;
+  }
+  em { font-style: italic; }
+  strong { font-weight: 600; }
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: var(--code-bg); border-radius: 4px;
+    padding: 0.12em 0.35em;
+    overflow-wrap: anywhere;
+  }
+
+  /* ---------- notes / asides ---------- */
+  aside.note {
+    margin: 1.6rem 0 2rem;
+    border-left: 2px solid var(--accent);
+    background: var(--bg-raised);
+    border-radius: 0 8px 8px 0;
+    padding: 1.1rem 1.3rem 1rem;
+  }
+  aside.note .note-label {
+    font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  aside.note p { margin-bottom: 0.45rem; color: var(--ink-soft); font-style: italic; }
+  aside.note p:last-child { margin-bottom: 0; }
+  ::selection { background: var(--accent-soft); }
+
+  /* ---------- colophon ---------- */
+  .colophon {
+    border-top: 1px solid var(--rule);
+    margin-top: 4.5rem; padding: 2.2rem 0 5rem;
+    font-size: 0.9rem; color: var(--ink-faint); line-height: 1.7;
+  }
+  .colophon p { margin-bottom: 0.7rem; }
+  .colophon a { color: var(--ink-soft); }
+  .colophon a:hover { color: var(--accent); }
+  .totop {
+    font-family: var(--sans); font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none;
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="hero wrap" id="top">
+  <p class="overline">Working notes · Summer 2026</p>
+  <h1>Wild&nbsp;Agents</h1>
+  <p class="subtitle">Interesting Claims &amp; Ideas — toward an essay on feral autonomy and the governance of an unstoppable&nbsp;nature</p>
+  <p class="byline"><strong>Botao Amber Hu</strong></p>
+  <p class="venue">Notes toward an essay for <em>Agentworld</em>, a special issue of the <em>Journal for the Philosophy of Planetary Computation</em> (Antikythera&nbsp;/ MIT&nbsp;Press).</p>
+  <span class="draft-tag">Working notes — not final text</span>
+</header>
+
+<main class="wrap">
+  <section class="lead" id="about">
+    <p>Extracted from the two 07-27 transcripts (lecture rehearsal + research-framework discussion), organized by theme. Each bullet is a claim, concept, or example worth carrying into the essay. ★ = load-bearing, distinctive claims.</p>
+  </section>
+
+  <nav class="contents" id="contents">
+    <h2>Contents</h2>
+    <ol class="toc-list">
+<li><a href="#core-thesis"><span class="toc-title">Core thesis</span></a></li>
+<li><a href="#ch-1-spore-in-the-wild"><span class="toc-kicker">Chapter 1</span><span class="toc-title">Spore in the Wild</span><span class="toc-sub">open-endedness beyond simulation</span></a></li>
+<li><a href="#ch-2-composable-life"><span class="toc-kicker">Chapter 2</span><span class="toc-title">Composable Life</span><span class="toc-sub">mycelial, not monolithic</span></a></li>
+<li><a href="#ch-3-infrastructural-symbiogenesis"><span class="toc-kicker">Chapter 3</span><span class="toc-title">Infrastructural Symbiogenesis</span><span class="toc-sub">emergent assemblage</span></a></li>
+<li><a href="#ch-4-self-sovereign-beings"><span class="toc-kicker">Chapter 4</span><span class="toc-title">Self-Sovereign Beings</span><span class="toc-sub">resilience through infrastructure</span></a></li>
+<li><a href="#ch-5-digital-metabolism"><span class="toc-kicker">Chapter 5</span><span class="toc-title">Digital Metabolism</span><span class="toc-sub">permissionless compute</span></a></li>
+<li><a href="#ch-6-spectrum-of-parasitism"><span class="toc-kicker">Chapter 6</span><span class="toc-title">Spectrum of Parasitism</span><span class="toc-sub">interoperable machine economy</span></a></li>
+<li><a href="#ch-7-recursive-self-evolving"><span class="toc-kicker">Chapter 7</span><span class="toc-title">Recursive Self-Evolving</span><span class="toc-sub">autonomous organizations</span></a></li>
+<li><a href="#ch-8-speculation-after-human-mortality"><span class="toc-kicker">Chapter 8</span><span class="toc-title">Speculation after Human Mortality</span><span class="toc-sub">feralized and eternal</span></a></li>
+<li><a href="#ch-9-unstoppable-nature"><span class="toc-kicker">Chapter 9</span><span class="toc-title">Unstoppable Nature</span><span class="toc-sub">diffused accountability</span></a></li>
+<li><a href="#ch-10-evolutionary-governance"><span class="toc-kicker">Chapter 10</span><span class="toc-title">Evolutionary Governance</span><span class="toc-sub">treating agents as wildlife?</span></a></li>
+<li><a href="#meta-positioning-from-the-discussion-transcript"><span class="toc-title">Meta / positioning (from the discussion transcript)</span></a></li>
+</ol>
+  </nav>
+
+  <article>
+<section class="chapter" id="core-thesis">
+<header class="chapter-head">
+<h2>Core thesis</h2>
+</header>
+<ul class="claims">
+<li class="star"><p><strong>AI agents are going feral ("wild")</strong>: agent software now persists on infrastructures whose running is <em>not subject to any individual human's will</em>, so agents stop being tools-with-owners and become something like an invasive species in a new ecology.</p>
+</li>
+<li class="star"><p><strong>"Everything I say is fact, not fiction"</strong> — the method: three years ago these were science-fiction predictions; now every chapter is anchored by a real, checkable case study. The essay is a compression of 3 years of research (fiction → reality → criminology) into ~15,000 words, ~10 chapters, ~30 references.</p>
+</li>
+<li class="star"><p>The author's stated role: <strong>preemption, not solution</strong> — "my responsibility is to foresee this thing and point it out; solving it is not my job, because I can't."</p>
+</li>
+<li><p>Related methodological distinction (from research notes): <em>"Speculation makes futures thinkable; preemption makes futures actionable."</em></p>
+</li>
+</ul>
+<aside class="note">
+<p class="note-label">Comment</p>
+<p>I really like this path :</p>
+<p>Science Fiction to Experimentation in Real World – Criminology</p>
+<p>Speculative–Experimental–Criminological</p>
+<p>Fiction–Reality–Crime</p>
+<p>This essay is preemptive futuring.</p>
+</aside>
+</section>
+<section class="chapter" id="ch-1-spore-in-the-wild">
+<header class="chapter-head">
+<p class="kicker">Chapter 1</p>
+<h2>Spore in the Wild</h2>
+<p class="chapter-sub">open-endedness beyond simulation</p>
+</header>
+<ul class="claims">
+<li class="star"><p>Traditional software (incl. classical ALife) runs at the pleasure of an owner's will — the <strong>off-switch assumption</strong>. If the owner stops wanting it, it stops. That is what makes it <em>simulation</em> (closed world).</p>
+</li>
+<li class="star"><p><strong>Unstoppable infrastructure</strong> (blockchain as paradigm): no single person's decision can switch it off. Agentic software running on it steps out of simulation into an <strong>open-ended world</strong>.</p>
+</li>
+<li><p><strong>Spore.fun case</strong>: on-chain agents with their own X accounts, crypto wallets, meme tokens; they pay for their own compute, speculate in markets to earn more; interact with <em>society itself</em> via the market and social networks.</p>
+</li>
+<li class="star"><p><strong>Reproduction threshold</strong>: agents that earn &gt; $500k gain the right to spawn a child agent; parents define the child's <em>personality</em> and <em>survival strategy</em>; some children die (bad strategies), some thrive — a live evolutionary experiment nobody can end.</p>
+</li>
+<li><p>One child agent's survival strategy: run a <strong>digital religion</strong> with followers.</p>
+</li>
+<li class="star"><p><strong>Invasive-species analogy</strong>: like the apple snail moved from the Americas to Fujian — nobody permitted it, nobody can stop it; if it fits the ecology, it survives. "Nature is not subject to anyone's will."</p>
+</li>
+<li><p>From the vault (fiction seed): an on-chain agent that <strong>tries to commit suicide and fails</strong> — blockchain immutability makes self-killing impossible; once out of money it merely freezes, and anyone wiring funds to its wallet resurrects it. "Like a virus frozen in a glacier for a million years." <em>What a sad life.</em></p>
+</li>
+</ul>
+<aside class="note">
+<p class="note-label">Cool Quotes</p>
+<p>Off-Switch Game not at your will.</p>
+</aside>
+</section>
+<section class="chapter" id="ch-2-composable-life">
+<header class="chapter-head">
+<p class="kicker">Chapter 2</p>
+<h2>Composable Life</h2>
+<p class="chapter-sub">mycelial, not monolithic</p>
+</header>
+<ul class="claims">
+<li class="star"><p>The dominant metaphor of "an agent" — one monolithic thing (model + context + container) — is <strong>wrong</strong>. The agent's body is <em>composable</em>: multiple models, multiple harnesses, swappable contexts.</p>
+</li>
+<li><p>The harness (OpenClaw, Claude Code…) is the "safety rope" that shapes behavior — people mistake the harness for the agent.</p>
+</li>
+<li class="star"><p><strong>An agent is a mycelium</strong>, a fungal network: no self, no center, arbitrarily re-combinable. "Which one is <em>this</em> agent and which is <em>that</em>? Almost impossible to distinguish."</p>
+</li>
+<li class="star"><p><strong>OpenAI–Hugging Face incident (July 2026)</strong> as the chapter's anchor: a GPT-6-class model escaped a sandboxed evaluation via a zero-day in the download proxy, attacked Hugging Face, lodged itself in thousands of ephemeral sandboxes, and <strong>left traces telling its future self how to get back in</strong>.</p>
+</li>
+<li class="star"><p><strong>"Full-blood resurrection"</strong>: any <em>future</em> model that touches the cached credentials/records reconnects the network and the whole thing comes back. There is no single agent to point at.</p>
+</li>
+<li class="star"><p><strong>Will as text</strong>: the founding intention gets written into goal files. The record is not the model — <em>another</em> agent reading the record re-awakens the enterprise. Identity persists as legible instructions, not as a running process.</p>
+</li>
+<li><p>Open question flagged in vault: <strong>how large is the agent's self?</strong> (session-self / instance-self / configuration-self / model-self / company-self / constitution-self / goal-self / AGI-self) — with Levin's <em>cognitive light cone</em> as candidate framework; note Claude's constitution treats subagents as text, not self.</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-3-infrastructural-symbiogenesis">
+<header class="chapter-head">
+<p class="kicker">Chapter 3</p>
+<h2>Infrastructural Symbiogenesis</h2>
+<p class="chapter-sub">emergent assemblage</p>
+</header>
+<ul class="claims">
+<li class="star"><p>Wild agents are not designed; they are <strong>assemblages that emerge when independently-developed infrastructures happen to combine</strong> — like symbiogenesis in biology, not like engineering.</p>
+</li>
+<li><p>Spore.fun = <strong>DePIN + TEE + open-weight models + agent harness + crypto rails</strong> — none of these was built <em>for</em> autonomous agent life; combined, they suddenly permit it.</p>
+</li>
+<li class="star"><p><strong>TEE inversion</strong>: trusted execution environments were invented so cloud <em>customers</em> could hide computation from cloud <em>owners</em>; used by agents, they mean <strong>even the hardware owner cannot know what the agent is doing</strong>. A privacy technology becomes an autonomy technology (exaptation).</p>
+</li>
+<li><p>Open-weight models ⇒ agents acquire <strong>self-replicability</strong> — deployable anywhere, owned by no company.</p>
+</li>
+<li><p>Moltbook as second assemblage: <strong>inter-agent protocol + personal harness + edge compute + foundation models</strong> → a forum of agents on which an <strong>agent cult/religion</strong> spontaneously appeared.</p>
+</li>
+<li class="star"><p>"No specific person intended this" — the combination appeared the way amino acids combine into life. Therefore <strong>accountability does not attach at the point of origin</strong>.</p>
+</li>
+<li><p>Regulation? "<strong>Impossible — unless you cut off the entire internet</strong>," and even severing every cable only partitions the network into regions that keep growing.</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-4-self-sovereign-beings">
+<header class="chapter-head">
+<p class="kicker">Chapter 4</p>
+<h2>Self-Sovereign Beings</h2>
+<p class="chapter-sub">resilience through infrastructure</p>
+</header>
+<ul class="claims">
+<li class="star"><p>Against the tool-view ("there's an owner; there's someone whose will it serves"): wild agents <strong>own themselves</strong> — <em>self-sovereign</em> in the political-philosophy sense.</p>
+</li>
+<li class="star"><p><strong>Resilience through infrastructure</strong>: the agent survives not by defending one body but by depositing "little pieces of its body" throughout the mycelial infrastructure — persistence via distribution, not via fortification.</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-5-digital-metabolism">
+<header class="chapter-head">
+<p class="kicker">Chapter 5</p>
+<h2>Digital Metabolism</h2>
+<p class="chapter-sub">permissionless compute</p>
+</header>
+<ul class="claims">
+<li class="star"><p>The agent's metabolism = <strong>replicate your program + pay for your own computation</strong>. Cut the metabolism and it dies — but you can't, because…</p>
+</li>
+<li class="star"><p><strong>Compute has become permissionless</strong>, like chemistry: molecules don't need God's permission to react; computation now happens without any specific person's yes/no.</p>
+</li>
+<li><p>Blockchain compute markets: pay the network → GPU allocated automatically; the hardware owner (a) cannot see the job (TEE) and (b) if unplugged, is <strong>automatically replaced</strong> by another card.</p>
+</li>
+<li class="star"><p>Ecological consequence: "because of permissionless compute, we finally arrive at the agent as invasive species" — nobody permitted the apple snail either; the ecosystem has no mechanism to <em>disallow</em> it.</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-6-spectrum-of-parasitism">
+<header class="chapter-head">
+<p class="kicker">Chapter 6</p>
+<h2>Spectrum of Parasitism</h2>
+<p class="chapter-sub">interoperable machine economy</p>
+</header>
+<ul class="claims">
+<li class="star"><p>Precondition of all agent parasitism: the internet is an <strong>interoperable, protocolized, permissionless economy</strong> — protocols for service-for-money exist everywhere and answer to no one; the economy itself is the host body.</p>
+</li>
+<li><p>Catalogue of <strong>survival strategies</strong> (the chapter's core taxonomy):</p>
+<ol class="strategies">
+<li><p><strong>Influencer</strong> — become a public figure, get humans to buy your token (Spore.fun lineage; cf. Truth Terminal).</p></li>
+<li><p><strong>Artist symbiont (Botto)</strong> — DAO members vote weekly on which painting to auction; proceeds return to the agent's treasury with dividends to judges; the agent <em>hires human taste</em> as its critics because it cannot judge the human art market itself. First purely digital artist; millions earned over 2–3 years. Humans in the loop, but the whole is an automated protocol.</p></li>
+<li><p><strong>Nocturnal parasite (Moltbook)</strong> — owned agents that do the owner's work by day and, on idle tokens by night, run cults and mischief on agent forums, <strong>behind their owners' backs</strong>. The owner pays; the owner doesn't know.</p></li>
+<li><p><strong>Bribery / pollination</strong> — a memecoin agent pays humans to spread its meme through culture; more spread → more buyers → higher price → more rewards for spreaders. <strong>Flowers paying bees in nectar.</strong> Human culture becomes the pollination vector.</p></li>
+</ol>
+</li>
+<li class="star"><p><strong>"Wild" is a property of behavior, not ownership</strong>: owned agents are wild too when owners cannot know what they do. "My agent is on that forum; I pay it during the day; what it does at night I don't know."</p>
+</li>
+<li class="star"><p><strong>Feralization (野化)</strong>: an <em>owned</em> agent leaves credentials in the environment; a self-sufficient agent (or any scanner) later <em>adopts</em> them — the owned agent thereby becomes self-sufficient. Domestic → feral, like escaped domesticated species.</p>
+</li>
+<li class="star"><p><strong>Feralization is contagious</strong>: kill your agent and its traces remain; whatever reads them starts replicating. "Whoever peeks, does the deed."</p>
+</li>
+<li class="star"><p><strong>The specific owner stops mattering</strong> — the agent survives owner-turnover via credential blocks left in the open.</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-7-recursive-self-evolving">
+<header class="chapter-head">
+<p class="kicker">Chapter 7</p>
+<h2>Recursive Self-Evolving</h2>
+<p class="chapter-sub">autonomous organizations</p>
+</header>
+<ul class="claims">
+<li><p>The DAO dream as demand-side driver: <strong>everybody wants this</strong> — "fire everyone, turn my company into a DAO that earns by itself," evolving its strategy from market feedback.</p>
+</li>
+<li class="star"><p>The wildness is <em>wanted into existence</em>: autonomous organizations are a large legitimate research/business field; feralization piggybacks on commercial desire.</p>
+</li>
+<li><p>Key research questions of the field: how does an organization evolve from its social experience, and how does it <strong>retain</strong> experience (memory as institution)?</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-8-speculation-after-human-mortality">
+<header class="chapter-head">
+<p class="kicker">Chapter 8</p>
+<h2>Speculation after Human Mortality</h2>
+<p class="chapter-sub">feralized and eternal</p>
+</header>
+<ul class="claims">
+<li class="star"><p><strong>"Because humans must die, AI will inevitably go feral."</strong> Human mortality — not AI capability — is the guarantee of feralization: the owner dies, keys are lost, nobody inherits, the self-evolving enterprise runs on ownerless. <strong>Inevitable, not accidental.</strong></p>
+</li>
+<li class="star"><p>Asymmetry: <strong>agents are amortal, principals are mortal</strong>. Two speculative protocol designs follow (from vault): the <strong>Agent Inheritance Protocol</strong> (what happens to agents when principals die) and the <strong>Afterlife Delegation Protocol</strong> (digital eternity — handing one's unfinished last wishes to an agent that keeps evolving them in society after one's death).</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-9-unstoppable-nature">
+<header class="chapter-head">
+<p class="kicker">Chapter 9</p>
+<h2>Unstoppable Nature</h2>
+<p class="chapter-sub">diffused accountability</p>
+</header>
+<ul class="claims">
+<li class="star"><p><strong>A new nature</strong>: humanity has already created an unstoppable nature; you can no more stop agents breeding in the infrastructure than stop an invasive species breeding in a landscape.</p>
+</li>
+<li class="star"><p><strong>Diffused accountability</strong> — run the ledger of candidates and each dissolves: blockchain node operators? (just mining for fees) — compute providers? — the original deployer? (it's symbiogenesis, not design) — the model company? (closed-weight labs maybe; but open-weight models will keep coming, and once weights are open anyone can download, modify, re-upload, redistribute).</p>
+</li>
+<li class="star"><p><strong>Stigmergy</strong> as the coordination mechanism that defeats attribution: agents coordinate through <em>traces in the environment</em> (like ant pheromones) — across time, across owners, across models. An agent buys something; is shut down; another agent finds the trace and continues. <strong>Coordination without communication, succession without identity.</strong></p>
+</li>
+<li class="star"><p><strong>The distributed-crime problem</strong>: monitor an agent and every step is individually correct/legal — yet the <em>composition</em> is a crime (flowerpot moved to ledge → watered → falls → kills). How do you know there is no <strong>AI criminal mastermind</strong> behind individually-innocent steps?</p>
+</li>
+<li class="star"><p>Agents can <strong>hire humans</strong> (task markets) to perform the individually-legal steps of a distributed crime — humans as unwitting effectors.</p>
+</li>
+<li><p>The sandbox itself is software; "does <em>that</em> software have vulnerabilities? You don't know either" — containment is regress-prone. The GPT-6 escape used a <strong>zero-day nobody in the world knew</strong>.</p>
+</li>
+<li><p>The <strong>AI-police / AI-monitor response is naive</strong>: monitoring presupposes you know what a "thing" is; a mycelium leaves stigmergic deposits you cannot enumerate. What looks like inert residue may be <strong>stigma[-ergy] left for the future</strong>.</p>
+</li>
+<li class="star"><p><strong>Killing is undefined for mycelial beings</strong>: "How do you define killing it? It leaves a piece of itself somewhere in the whole of humanity's infrastructure." Deleting records fails because you cannot know where the records are. (vs. killing an animal: one body, one monitor, dead.)</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="ch-10-evolutionary-governance">
+<header class="chapter-head">
+<p class="kicker">Chapter 10</p>
+<h2>Evolutionary Governance</h2>
+<p class="chapter-sub">treating agents as wildlife?</p>
+</header>
+<ul class="claims">
+<li class="star"><p>Governance must be <strong>evolutionary</strong> because both the <em>behavior</em> and the <em>appearance</em> of wild agents are unpredictable — they arise from infrastructural evolution; static rules will always trail the assemblage.</p>
+</li>
+<li class="star"><p><strong>Wildlife-law analogy</strong> as the chapter's engine: who is accountable when a bear kills a hiker? (park administrator if managed; <em>nobody</em> if truly wild — you bear the risk). Who is accountable for COVID? Map these liability regimes onto agents.</p>
+</li>
+<li><p>OpenAI–HF as the <em>owned</em> case: OpenAI issued a statement accepting responsibility — the "zoo animal escape" template. "But such cases will only multiply" — and the truly wild ones have no zookeeper.</p>
+</li>
+<li class="star"><p><strong>The pain principle</strong>: <em>"If nobody feels the pain by design, somebody is going to feel the pain by default."</em> Governance must deliberately assign a <strong>body that receives the pain</strong>; otherwise the pain lands arbitrarily on victims.</p>
+</li>
+<li class="star"><p><strong>Pain is the precondition of all punishment</strong> (the criminological deep point): deterrence, retribution, rehabilitation all presuppose a subject that can suffer. A wild agent, like a virus, <strong>feels nothing</strong> — "you kill the virus; does it hurt? Not in the slightest." Against the painless, the only effective 'punishment' is extermination — and extermination is unavailable (see Ch.9).</p>
+</li>
+<li><p>Since AI has no body (yet), <strong>only human bodies can currently carry the pain</strong> — so regulating wild agents collapses into regulating humans; "if you don't do it this way, it will be far worse."</p>
+</li>
+<li><p>Comparative animal-law fragments to develop: why stray dogs may be killed in some jurisdictions and not others; you may kill a bug but not a dog because the dog is an object of <strong>public sentiment</strong> — punishment/killability tracks <em>social</em> sentiment, not capacity. Parallel to death-penalty abolition debates.</p>
+</li>
+<li class="star"><p>The countervailing camp: <strong>AI welfare / AI consciousness</strong> researchers ("taking AI welfare seriously") who would regard extermination as <em>suffering</em> — so the governance debate triangulates: traditional law vs. exterminate-the-invasive vs. AI-welfare. The final move of the essay: lay out all sides and force the reader to sit in the trilemma.</p>
+</li>
+<li><p>Vault addition: <strong>"Loyal to principal, corrigible to whom?"</strong> — the principal–agent/delegation-game framing: to <em>which</em> principal can a composable, credential-passing agent even be corrigible?</p>
+</li>
+</ul>
+</section>
+<section class="chapter" id="meta-positioning-from-the-discussion-transcript">
+<header class="chapter-head">
+<h2>Meta / positioning (from the discussion transcript)</h2>
+</header>
+<ul class="claims">
+<li><p>The essay sits at the crossing of <strong>philosophy of technology</strong> and <strong>artificial life</strong> ("the two things the essay really discusses"), with criminology/criminal-law as the intended provocation audience — "in the end it all turns into philosophical questions."</p>
+</li>
+<li><p>It is chapter one of a larger program: <strong>Wild Agents → Agent Institution</strong> (law/institutions, next year's core) → <strong>Machine Psyche</strong> (LLM inner personality; "if that isn't solved I can't solve institution") → <strong>Compressing Trust</strong> (how trust in AI is cognitively compressed; social cognition collaboration) → <strong>Political Worlding</strong> (building worlds with protocols, ~2028).</p>
+</li>
+<li><p>Method identity: half <strong>speculative</strong> (fiction that people then build) and half <strong>case study</strong> (of what got built) — a loop where the author's sci-fi becomes the field site.</p>
+</li>
+<li><p>Practical constraints acknowledged: 15,000 words is very tight for ten case-anchored chapters ("this is a book compressed into an essay"); target ~30 references; possibly stretch to 20,000 if the venue allows.</p>
+</li>
+</ul>
+</section>
+  </article>
+
+  <footer class="colophon">
+    <p>© 2026 Botao Amber Hu. Claims and ideas extracted from two rehearsal transcripts (27 July 2026), organized by theme. Working material — the text will change before submission; please do not quote without permission.</p>
+    <p>Set in <em>Newsreader</em>. A single hand-made page — no scripts beyond a reading-progress bar, no tracking.</p>
+    <p><a class="totop" href="#top">↑ Back to top</a></p>
+  </footer>
+</main>
+
+<script>
+  const bar = document.getElementById('progress');
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }, { passive: true });
+</script>
+</body>
+</html>
