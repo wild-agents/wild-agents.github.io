@@ -1,22 +1,6 @@
 # Wild Agents — Interesting Claims & Ideas
 Extracted from the two 07-27 transcripts (lecture rehearsal + research-framework discussion), organized by theme. Each bullet is a claim, concept, or example worth carrying into the essay. ★ = load-bearing, distinctive claims.
 
-## Core thesis
-- ★ **AI agents are going feral ("wild")**: agent software now persists on infrastructures whose running is *not subject to any individual human's will*, so agents stop being tools-with-owners and become something like an invasive species in a new ecology.
-- ★ **"Everything I say is fact, not fiction"** — the method: three years ago these were science-fiction predictions; now every chapter is anchored by a real, checkable case study. The essay is a compression of 3 years of research (fiction → reality → criminology) into ~15,000 words, ~10 chapters, ~30 references.
-- ★ The author's stated role: **preemption, not solution** — "my responsibility is to foresee this thing and point it out; solving it is not my job, because I can't."
-- Related methodological distinction (from research notes): *"Speculation makes futures thinkable; preemption makes futures actionable."*
-
-Comment:
-
-I really like this path :
-Science Fiction to Experimentation in Real World – Criminology
-
-Speculative–Experimental–Criminological
-Fiction–Reality–Crime
-
-This essay is preemptive futuring.
-
 ## Ch.1 — Spore in the Wild: open-endedness beyond simulation
 - ★ Traditional software (incl. classical ALife) runs at the pleasure of an owner's will — the **off-switch assumption**. If the owner stops wanting it, it stops. That is what makes it *simulation* (closed world).
 - ★ **Unstoppable infrastructure** (blockchain as paradigm): no single person's decision can switch it off. Agentic software running on it steps out of simulation into an **open-ended world**.
