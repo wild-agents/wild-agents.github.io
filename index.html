@@ -269,7 +269,10 @@
     font-family: var(--sans);
     padding-right: 0.8rem;
     scrollbar-width: none;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s;
   }
+  .side-toc.visible { opacity: 1; visibility: visible; }
   .side-toc::-webkit-scrollbar { display: none; }
   @media (max-width: 1220px) { .side-toc { display: none; } }
   .side-toc a {
@@ -875,6 +878,8 @@
 
 <script>
   const bar = document.getElementById('progress');
+  const sideToc = document.querySelector('.side-toc');
+  const hero = document.querySelector('.hero');
   const spyLinks = Array.from(document.querySelectorAll('.side-toc a'));
   const spyIds = spyLinks.map(a => a.getAttribute('href').slice(1));
   let active = -1;
@@ -882,6 +887,7 @@
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
     bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    sideToc.classList.toggle('visible', hero.getBoundingClientRect().bottom < 100);
     let cur = -1;
     for (let i = 0; i < spyIds.length; i++) {
       const el = document.getElementById(spyIds[i]);
