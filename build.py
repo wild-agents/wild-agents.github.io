@@ -162,7 +162,7 @@ def toc_html(entries):
 
 
 def side_toc_html(entries):
-    out = ['<a class="st-0" href="#top">Wild Agents</a>']
+    out = ['<a class="st-0" href="#top" title="Wild Agents">Wild Agents</a>']
     for d, hid, kicker, title, sub in entries:
         if kicker.startswith("Chapter "):
             num = f'<span class="st-num">{kicker[8:]}</span>'
@@ -171,7 +171,10 @@ def side_toc_html(entries):
             label = f"{kicker} · {title}"
         else:
             label = title
-        out.append(f'<a class="st-{d}" href="#{hid}">{label}</a>')
+        full = f"{kicker} — {title}" if kicker else title
+        if sub:
+            full += f": {sub}"
+        out.append(f'<a class="st-{d}" href="#{hid}" title="{full}">{label}</a>')
     return "\n".join(out)
 
 
