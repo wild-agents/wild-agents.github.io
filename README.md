@@ -1,7 +1,7 @@
 # wild-agents.github.io
 
-Working notes site for **Wild Agents** — claims & ideas toward an essay on feral autonomy, by Botao Amber Hu.
+Essay site for **Wild Agents: A Preemptive Criminology of Feral AI** (Draft v0.2), by Botao Amber Hu.
 
-- `content.md` — source content
+- `essay.md` + `references.bib` — sources, synced from the Obsidian vault
 - `template.html` — page shell and styles
-- `build.py` — regenerates `index.html` from the two files above (`python3 build.py`)
+- `build.py` — re-syncs from the vault and regenerates `index.html` via pandoc --citeproc (`python3 build.py`)
