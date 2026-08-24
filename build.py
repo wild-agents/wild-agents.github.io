@@ -17,7 +17,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 VAULT = pathlib.Path.home() / "Projects/Oxford/Obsidian/Wild Agents"
 
 SOURCES = {
-    "essay.md": "Wild Agents — Draft v0.3.md",
+    "essay.md": "Wild Agents — Draft v0.4.md",
     "references.bib": "references.bib",
 }
 if (VAULT / SOURCES["essay.md"]).exists():
@@ -40,12 +40,17 @@ def pandoc(md, extra):
     r = subprocess.run(
         ["pandoc", "-f", "markdown", "-t", "html", "--wrap=none"] + extra,
         input=md.encode(), capture_output=True, check=True)
+    for ln in r.stderr.decode().splitlines():
+        print(ln)
     return r.stdout.decode()
 
 
 def split_sub(rest):
     if ": " in rest:
         t, s = rest.split(": ", 1)
+    elif "? " in rest:
+        t, s = rest.split("? ", 1)
+        t += "?"
     else:
         t, s = rest, ""
     return t, s
@@ -56,6 +61,8 @@ essay_md = (ROOT / "essay.md").read_text(encoding="utf-8")
 essay_md = "\n".join(ln for ln in essay_md.split("\n")
                      if not ln.startswith("> Draft v0")
                      and not ln.startswith("*What is lost here"))
+# "@truth_terminal" in the Ch.7 epigraph is an X handle, not a citation key
+essay_md = essay_md.replace("@truth_terminal", "\\@truth_terminal")
 
 # ---- images: sync Obsidian ![[...]] embeds into img/, resized for web ----
 IMG_DIR = ROOT / "img"
