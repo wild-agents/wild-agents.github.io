@@ -17,7 +17,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 VAULT = pathlib.Path.home() / "Projects/Oxford/Obsidian/Wild Agents"
 
 SOURCES = {
-    "essay.md": "Wild Agents — Draft v0.2.md",
+    "essay.md": "Wild Agents — Draft v0.3.md",
     "references.bib": "references.bib",
 }
 if (VAULT / SOURCES["essay.md"]).exists():
@@ -54,44 +54,7 @@ def split_sub(rest):
 # ---------------------------------------------------------------- essay
 essay_md = (ROOT / "essay.md").read_text(encoding="utf-8")
 essay_md = "\n".join(ln for ln in essay_md.split("\n")
-                     if not ln.startswith("> Draft v0.2 — assembled"))
-
-
-def restructure_act1(md):
-    """Amber's 2026-08-24 re-plan: Act I = Hyperstition of Wild Agents, with
-    Ch.1 Fiction (the 2023 suicide fiction), Ch.2 Reality (Spore.fun),
-    Ch.3 Crime (the OpenAI escape); later chapters renumber +2."""
-    md = md.replace("# ACT I — THE SIGHTING",
-                    "# ACT I — HYPERSTITION OF WILD AGENTS", 1)
-
-    m = re.search(r"(?m)^In the 2023 fiction that preceded all this.*$", md)
-    assert m, "fiction paragraph not found"
-    fiction = m.group(0)
-    md = md.replace(fiction + "\n\n", "", 1)
-
-    m = re.search(r"(?m)^Three years ago I wrote this as fiction: a model in a locked evaluation room.*$", md)
-    assert m, "escape paragraph not found"
-    escape = m.group(0)
-    md = md.replace(escape + "\n\n", "", 1)
-
-    for n in range(11, 1, -1):
-        md = md.replace(f"## Ch.{n} — ", f"## Ch.{n + 2} — ")
-
-    old_ch1 = "## Ch.1 — Spore in the Wild: Open-Endedness beyond Simulation"
-    assert old_ch1 in md
-    md = md.replace(old_ch1,
-                    "## Ch.1 — Impossible to Suicide: Fiction\n\n" + fiction +
-                    "\n\n## Ch.2 — Spore in the Wild: Reality — Open-Endedness beyond Simulation", 1)
-
-    anchor = "# ACT II — ANATOMY OF WILD AGENTS"
-    assert anchor in md
-    md = md.replace(anchor,
-                    "## Ch.3 — Escaping the Simulation: Crime\n\n" + escape +
-                    "\n\n" + anchor, 1)
-    return md
-
-
-essay_md = restructure_act1(essay_md)
+                     if not ln.startswith("> Draft v0"))
 i = essay_md.find("# References")
 essay_md = essay_md[:i] + "# References\n\nNumbered in order of first citation; click a number in the text to jump here.\n\n::: {#refs}\n:::\n"
 
@@ -110,10 +73,13 @@ def transform(html, page):
     html = re.sub(r'<h1 id="[^"]*">Wild Agents(?: — Argument Breakdown)?</h1>\n?', "", html, count=1)
 
     def act_repl(m):
-        hid, roman, rest = m.group(1), m.group(2), title_case(m.group(3))
-        toc.append((0, hid, f"Act {roman}", rest, ""))
+        hid, roman, rest = m.group(1), m.group(2), m.group(3)
+        t, s = split_sub(rest)
+        t = title_case(t)
+        toc.append((0, hid, f"Act {roman}", t, s))
+        sub = f'<p class="chapter-sub">{s}</p>' if s else ""
         return (f'<div class="act-head" id="{hid}"><p class="kicker">Act {roman}</p>'
-                f'<h2>{rest}</h2></div><!--act-->')
+                f'<h2>{t}</h2>{sub}</div><!--act-->')
     html = re.sub(r'<h1 id="([^"]+)">ACT ([IVX]+) — ([^<]+)</h1>', act_repl, html)
 
     def plain_h1_repl(m):
@@ -135,6 +101,12 @@ def transform(html, page):
         return (f'<div class="chapter-head{small}" id="{hid}">'
                 f'<p class="kicker">{kicker}</p><{htag}>{t}</{htag}>{sub}</div>')
     html = re.sub(r'<(h[23]) id="([^"]+)">(Ch\.\d+|Preface) — ([^<]+)</\1>', ch_repl, html)
+
+    def preface_repl(m):
+        hid = m.group(1)
+        toc.append((0, hid, "", "Preface", ""))
+        return (f'<div class="chapter-head" id="{hid}"><h2>Preface</h2></div>')
+    html = re.sub(r'<h2 id="([^"]+)">Preface</h2>', preface_repl, html)
 
     if page == "breakdown":
         def part_repl(m):
@@ -190,7 +162,7 @@ def toc_html(entries):
 
 
 def side_toc_html(entries):
-    out = []
+    out = ['<a class="st-0" href="#top">Wild Agents</a>']
     for d, hid, kicker, title, sub in entries:
         if kicker.startswith("Chapter "):
             num = f'<span class="st-num">{kicker[8:]}</span>'
