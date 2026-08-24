@@ -212,6 +212,13 @@
   }
   article blockquote p { margin-bottom: 0.4rem; text-align: left; hyphens: none; }
   article blockquote p:last-child { margin-bottom: 0; }
+  article img {
+    display: block;
+    max-width: 100%; height: auto;
+    margin: 1.8rem auto;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+  }
   article hr {
     border: none; border-top: 1px solid var(--rule);
     margin: 3rem 0;
@@ -281,7 +288,6 @@
     color: var(--ink-faint); text-decoration: none;
     padding: 0.28rem 0 0.28rem 0.85rem;
     border-left: 2px solid var(--rule);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .side-toc a:hover { color: var(--ink); }
   .side-toc a.st-0 {
@@ -289,11 +295,28 @@
     letter-spacing: 0.1em; text-transform: uppercase;
     margin-top: 0.55rem;
   }
-  .side-toc a.st-1 { padding-left: 1.7rem; }
+  .side-toc a.st-1 {
+    padding-left: calc(1.7rem + 1.65em);
+    text-indent: -1.65em;
+  }
   .side-toc a.active {
     color: var(--accent); border-left-color: var(--accent);
     font-weight: 600;
   }
+  #st-tip {
+    position: fixed; z-index: 20;
+    transform: translateY(-50%);
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.35em 0.75em;
+    font-family: var(--serif); font-style: italic;
+    font-size: 0.85rem; color: var(--ink-soft);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    pointer-events: none; white-space: nowrap;
+    opacity: 0; transition: opacity 0.15s ease;
+  }
+  #st-tip.show { opacity: 1; }
   .side-toc .st-num {
     display: inline-block; min-width: 1.3em;
     margin-right: 0.35em;
@@ -325,6 +348,7 @@
 <aside class="side-toc" aria-label="Sections">
 {{SIDETOC}}
 </aside>
+<div id="st-tip" role="tooltip"></div>
 
 <main class="wrap">
   <nav class="contents" id="contents">
@@ -345,7 +369,7 @@
 <script>
   const bar = document.getElementById('progress');
   const sideToc = document.querySelector('.side-toc');
-  const hero = document.querySelector('.hero');
+  const article = document.querySelector('article');
   const spyLinks = Array.from(document.querySelectorAll('.side-toc a'));
   const spyIds = spyLinks.map(a => a.getAttribute('href').slice(1));
   let active = -1;
@@ -353,7 +377,7 @@
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
     bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
-    sideToc.classList.toggle('visible', hero.getBoundingClientRect().bottom < 100);
+    sideToc.classList.toggle('visible', article.getBoundingClientRect().top < innerHeight * 0.35);
     let cur = -1;
     for (let i = 0; i < spyIds.length; i++) {
       const el = document.getElementById(spyIds[i]);
@@ -367,6 +391,24 @@
   }
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  const tip = document.getElementById('st-tip');
+  function moveTip(e) {
+    if (!tip.classList.contains('show')) return;
+    tip.style.left = (e.clientX + 16) + 'px';
+    tip.style.top = e.clientY + 'px';
+  }
+  spyLinks.forEach(a => {
+    a.addEventListener('mouseenter', e => {
+      const s = a.dataset.sub;
+      if (!s) return;
+      tip.textContent = s;
+      tip.classList.add('show');
+      moveTip(e);
+    });
+    a.addEventListener('mousemove', moveTip);
+    a.addEventListener('mouseleave', () => tip.classList.remove('show'));
+  });
 </script>
 </body>
 </html>

@@ -54,7 +54,36 @@ def split_sub(rest):
 # ---------------------------------------------------------------- essay
 essay_md = (ROOT / "essay.md").read_text(encoding="utf-8")
 essay_md = "\n".join(ln for ln in essay_md.split("\n")
-                     if not ln.startswith("> Draft v0"))
+                     if not ln.startswith("> Draft v0")
+                     and not ln.startswith("*What is lost here"))
+
+# ---- images: sync Obsidian ![[...]] embeds into img/, resized for web ----
+IMG_DIR = ROOT / "img"
+IMG_DIR.mkdir(exist_ok=True)
+
+
+def img_name(vault_name):
+    p = pathlib.Path(vault_name)
+    stem = re.sub(r"[^0-9A-Za-z]+", "-", p.stem).strip("-").lower()
+    return stem + p.suffix.lower()
+
+
+for name in set(re.findall(r"!\[\[([^\]]+)\]\]", essay_md)):
+    src = VAULT / name
+    dest = IMG_DIR / img_name(name)
+    if src.exists():
+        shutil.copy(src, dest)
+        w = subprocess.run(["sips", "-g", "pixelWidth", str(dest)],
+                           capture_output=True, text=True).stdout
+        m = re.search(r"pixelWidth: (\d+)", w)
+        if m and int(m.group(1)) > 1600:
+            subprocess.run(["sips", "-Z", "1600", str(dest)],
+                           capture_output=True, check=True)
+    elif not dest.exists():
+        print(f"WARNING: image not found in vault: {name}")
+
+essay_md = re.sub(r"!\[\[([^\]]+)\]\]",
+                  lambda m: f"![](img/{img_name(m.group(1))})", essay_md)
 i = essay_md.find("# References")
 essay_md = essay_md[:i] + "# References\n\nNumbered in order of first citation; click a number in the text to jump here.\n\n::: {#refs}\n:::\n"
 
@@ -130,6 +159,7 @@ def transform(html, page):
     # responsive tables
     html = html.replace("<table>", '<div class="table-wrap"><table>')
     html = html.replace("</table>", "</table></div>")
+    html = html.replace('<img src="img/', '<img loading="lazy" src="img/')
     # regex passes collect entries by kind, not position — restore document order
     toc.sort(key=lambda e: html.find(f'id="{e[1]}"'))
     return html, toc
@@ -162,7 +192,7 @@ def toc_html(entries):
 
 
 def side_toc_html(entries):
-    out = ['<a class="st-0" href="#top" title="Wild Agents">Wild Agents</a>']
+    out = ['<a class="st-0" href="#top">Wild Agents</a>']
     for d, hid, kicker, title, sub in entries:
         if kicker.startswith("Chapter "):
             num = f'<span class="st-num">{kicker[8:]}</span>'
@@ -171,10 +201,8 @@ def side_toc_html(entries):
             label = f"{kicker} · {title}"
         else:
             label = title
-        full = f"{kicker} — {title}" if kicker else title
-        if sub:
-            full += f": {sub}"
-        out.append(f'<a class="st-{d}" href="#{hid}" title="{full}">{label}</a>')
+        data = f' data-sub="{sub}"' if sub else ""
+        out.append(f'<a class="st-{d}" href="#{hid}"{data}>{label}</a>')
     return "\n".join(out)
 
 
