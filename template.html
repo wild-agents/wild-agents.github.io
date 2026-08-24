@@ -178,8 +178,11 @@
   }
 
   /* ---------- body ---------- */
-  article > p, article section > p { margin-bottom: 1.35rem; text-align: justify; hyphens: auto; }
-  article .act-epigraph, article .chapter-sub { text-align: left; hyphens: none; }
+  article > p, article section > p { margin-bottom: 0; text-align: justify; hyphens: auto; }
+  article p + p { text-indent: 1.7em; }
+  article .act-epigraph, article .chapter-sub { text-align: left; hyphens: none; text-indent: 0; }
+  article blockquote, article .table-wrap, article pre { margin-top: 1.3rem; }
+  #refs p { text-indent: 0; }
   em { font-style: italic; }
   strong { font-weight: 600; }
   code {
