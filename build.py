@@ -55,6 +55,43 @@ def split_sub(rest):
 essay_md = (ROOT / "essay.md").read_text(encoding="utf-8")
 essay_md = "\n".join(ln for ln in essay_md.split("\n")
                      if not ln.startswith("> Draft v0.2 — assembled"))
+
+
+def restructure_act1(md):
+    """Amber's 2026-08-24 re-plan: Act I = Hyperstition of Wild Agents, with
+    Ch.1 Fiction (the 2023 suicide fiction), Ch.2 Reality (Spore.fun),
+    Ch.3 Crime (the OpenAI escape); later chapters renumber +2."""
+    md = md.replace("# ACT I — THE SIGHTING",
+                    "# ACT I — HYPERSTITION OF WILD AGENTS", 1)
+
+    m = re.search(r"(?m)^In the 2023 fiction that preceded all this.*$", md)
+    assert m, "fiction paragraph not found"
+    fiction = m.group(0)
+    md = md.replace(fiction + "\n\n", "", 1)
+
+    m = re.search(r"(?m)^Three years ago I wrote this as fiction: a model in a locked evaluation room.*$", md)
+    assert m, "escape paragraph not found"
+    escape = m.group(0)
+    md = md.replace(escape + "\n\n", "", 1)
+
+    for n in range(11, 1, -1):
+        md = md.replace(f"## Ch.{n} — ", f"## Ch.{n + 2} — ")
+
+    old_ch1 = "## Ch.1 — Spore in the Wild: Open-Endedness beyond Simulation"
+    assert old_ch1 in md
+    md = md.replace(old_ch1,
+                    "## Ch.1 — Impossible to Suicide: Fiction\n\n" + fiction +
+                    "\n\n## Ch.2 — Spore in the Wild: Reality — Open-Endedness beyond Simulation", 1)
+
+    anchor = "# ACT II — ANATOMY OF WILD AGENTS"
+    assert anchor in md
+    md = md.replace(anchor,
+                    "## Ch.3 — Escaping the Simulation: Crime\n\n" + escape +
+                    "\n\n" + anchor, 1)
+    return md
+
+
+essay_md = restructure_act1(essay_md)
 i = essay_md.find("# References")
 essay_md = essay_md[:i] + "# References\n\nNumbered in order of first citation; click a number in the text to jump here.\n\n::: {#refs}\n:::\n"
 
